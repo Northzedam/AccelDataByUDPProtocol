@@ -1,4 +1,5 @@
 import socket
+from myPackage.graphics import update_graph
 
 def get_ip_address():
     # Crear un socket temporal
@@ -13,6 +14,9 @@ def get_ip_address():
     finally:
         s.close()
     return ip_address
+
+def getValues(msg):
+    return tuple(map(int,msg.split(',')))
 
 UDP_IP = "0.0.0.0"  # Escuchar en todas las interfaces
 UDP_PORT = 4210  # Puerto que coincide con el del Arduino
@@ -31,5 +35,11 @@ print("Esperando mensajes UDP en el puerto", UDP_PORT)
 
 while True:
     data, addr = sock.recvfrom(1024)  # Tamaño del buffer
-    print("Mensaje recibido:", data.decode())
-    print("Desde:", addr)
+    try:
+        dataString =  data.decode('utf-8')
+        tuplaValues = getValues(dataString)
+        print(tuplaValues[0])
+        update_graph(tuplaValues)
+       # print("Desde:", addr)
+    except UnicodeDecodeError:
+        print("error")
