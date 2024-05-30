@@ -20,5 +20,5 @@ void loop() {
     
     sendMessage(mpuData);
     //"192.168.100.5",4210
-    delay(100);
+    delay(10);
 }
